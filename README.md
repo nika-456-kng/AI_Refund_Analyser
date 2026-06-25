@@ -7,44 +7,32 @@ A production-grade, full-stack event-driven decision engine that automates compl
 ## 🏗️ Architectural Topology & Component Flow
 
 The platform is designed with strict separation of concerns, decoupling the reactive client dashboard from the intelligent, stateful orchestration backend.
-              ┌────────────────────────────────────────┐
-              │          React Frontend UI             │
-              └───────────────────┬────────────────────┘
-                                  │  JSON HTTP POST Payload
-                                  ▼
-              ┌────────────────────────────────────────┐
-              │         FastAPI Web Gateway            │
-              └───────────────────┬────────────────────┘
-                                  │
-                                  ▼
-                    ┌───────────────────────────┐
-                    │   LangGraph StateGraph    │
-                    │   (Workflow Orchestration)│
-                    └─────────────┬─────────────┘
-                                  │
-     ┌────────────────────────────┼────────────────────────────┐
-     ▼                            ▼                            ▼
-┌──────────────────┐        ┌──────────────────┐        ┌──────────────────┐
-│ Validation Node  │        │   Policy Node    │        │  Comm Agent Node │
-├──────────────────┤        ├──────────────────┤        ├──────────────────┤
-│ SQLAlchemy ORM   │        │ FAISS Index      │        │ Temporal State   │
-│ SQLite Registry  │        │ Embedding Search │        │ Delta Math       │
-└──────────────────┘        └──────────────────┘        └──────────────────┘
-│                            │                            │
-└────────────────────────────┼────────────────────────────┘
-│                            |                            |
-┌────────────────────────────┴────────────────────────────┐
-                             |
-                             ▼
-               ┌───────────────────────────┐
-               │  Unified Pipeline State   │
-               └─────────────┬─────────────┘
-│
-┌────────────────────────────┴────────────────────────────┐
-▼                                                         ▼
-┌────────────────────────────────────────┐        ┌────────────────────────────────────────┐
-│  Automated Dispatch Communication API   │        │ Immutable Telemetry System Audit Log  │
-└────────────────────────────────────────┘        └────────────────────────────────────────┘
+```mermaid
+flowchart TD
+
+A[React Frontend] --> B[FastAPI Web Gateway]
+
+B --> C[LangGraph StateGraph]
+
+C --> D[Policy Node]
+C --> E[Communication Agent]
+C --> F[Validation Node]
+
+D --> G[Unified Pipeline State]
+E --> G
+F --> G
+
+G --> H[SQLAlchemy ORM]
+G --> I[FAISS Index]
+G --> J[SQLite Registry]
+G --> K[Temporal State]
+
+I --> L[Embedding Search]
+
+G --> M[Automated Dispatch API]
+
+M --> N[Immutable Telemetry & Audit Log]
+```
 
 ### Architectural Breakdown
 1. **Presentation Layer (React):** A responsive, single-page client dashboard utilizing state hook parameters to provide explicit structural visibility into system variables, raw database payloads, and pipeline delivery schemas.
