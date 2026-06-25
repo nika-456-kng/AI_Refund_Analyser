@@ -10,28 +10,54 @@ The platform is designed with strict separation of concerns, decoupling the reac
 ```mermaid
 flowchart TD
 
-A[React Frontend] --> B[FastAPI Web Gateway]
+    A[React Client Dashboard]
+    B[FastAPI / Python Backend]
+    C[LangGraph StateGraph]
 
-B --> C[LangGraph StateGraph]
+    D[Supervisor Node]
+    E[Policy Retrieval]
+    F[Communication Agent]
 
-C --> D[Policy Node]
-C --> E[Communication Agent]
-C --> F[Validation Node]
+    G[FAISS Vector Database]
+    H[Sentence Transformer<br/>all-MiniLM-L6-v2]
 
-D --> G[Unified Pipeline State]
-E --> G
-F --> G
+    I[SQLAlchemy ORM]
+    J[SQLite Database]
 
-G --> H[SQLAlchemy ORM]
-G --> I[FAISS Index]
-G --> J[SQLite Registry]
-G --> K[Temporal State]
+    K[Temporal Date Logic]
+    L[Refund Decision]
 
-I --> L[Embedding Search]
+    M[Audit Trail Logger]
+    N[audit_trail.txt]
 
-G --> M[Automated Dispatch API]
+    O[JSON Response]
 
-M --> N[Immutable Telemetry & Audit Log]
+    A -->|HTTP POST| B
+    B --> C
+
+    C --> D
+
+    D -->|Regex Validation| E
+    D -->|Valid Request| F
+    D -->|Rejected| O
+
+    E --> H
+    H --> G
+    G --> E
+
+    F --> I
+    I --> J
+    J --> F
+
+    F --> K
+    E --> L
+    K --> L
+
+    L --> M
+    M --> N
+
+    L --> O
+    O --> A
 ```
 
 ### Architectural Breakdown
